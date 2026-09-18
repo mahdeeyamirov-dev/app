@@ -1,47 +1,35 @@
 import Foundation
 
-struct DashboardHabit: Identifiable, Codable {
+struct BaseMetricStatus: Identifiable, Codable {
     let id: Int
+    let key: String?
     let name: String
-    let completedDates: [String] // "yyyy-MM-dd", UTC — matches the server's date format
-
-    private static let dayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        return formatter
-    }()
-
-    private static var utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
-        return calendar
-    }()
-
-    var isDoneToday: Bool {
-        completedDates.contains(Self.dayFormatter.string(from: Date()))
-    }
-
-    var currentStreak: Int {
-        let set = Set(completedDates)
-        var day = Self.utcCalendar.startOfDay(for: Date())
-        var streak = 0
-        while set.contains(Self.dayFormatter.string(from: day)) {
-            streak += 1
-            guard let previous = Self.utcCalendar.date(byAdding: .day, value: -1, to: day) else { break }
-            day = previous
-        }
-        return streak
-    }
+    let minValue: Double
+    let value: Double
+    let isGreen: Bool
 }
 
-struct DashboardParticipant: Identifiable, Codable {
+struct ParticipantSnapshot: Identifiable, Codable {
     let id: Int
     let telegramId: Int
     let displayName: String
-    let habits: [DashboardHabit]
+    let percentGreen: Int
+    let metrics: [BaseMetricStatus]
 }
 
-struct DashboardResponse: Codable {
-    let participants: [DashboardParticipant]
+struct SnapshotResponse: Codable {
+    let participants: [ParticipantSnapshot]
+}
+
+struct ParticipantHistory: Identifiable, Codable {
+    let id: Int
+    let telegramId: Int
+    let displayName: String
+    let weeklyPercents: [Int]
+    let currentPercent: Int
+}
+
+struct HistoryResponse: Codable {
+    let weeks: Int
+    let participants: [ParticipantHistory]
 }

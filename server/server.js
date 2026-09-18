@@ -30,8 +30,13 @@ function requireApiToken(req, res, next) {
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
-app.get('/api/dashboard', requireApiToken, (req, res) => {
-  res.json({ participants: db.allParticipantsWithHabits() });
+app.get('/api/dashboard/base', requireApiToken, (req, res) => {
+  res.json({ participants: db.dashboardSnapshot() });
+});
+
+app.get('/api/dashboard/base/history', requireApiToken, (req, res) => {
+  const weeks = Math.min(Math.max(parseInt(req.query.weeks, 10) || 6, 2), 26);
+  res.json({ weeks, participants: db.dashboardHistory(weeks) });
 });
 
 app.listen(PORT, () => {
