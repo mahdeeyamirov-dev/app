@@ -6,7 +6,7 @@ struct HabitTrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .environmentObject(store)
         }
         .windowResizability(.contentSize)

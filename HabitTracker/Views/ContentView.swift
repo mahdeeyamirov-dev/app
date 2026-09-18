@@ -38,7 +38,6 @@ struct ContentView: View {
                 AddHabitView()
             }
         }
-        .frame(minWidth: 420, minHeight: 480)
     }
 }
 
