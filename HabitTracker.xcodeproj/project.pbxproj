@@ -20,6 +20,9 @@
 		C27722F271C3B74192A9A4BD /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A43935BA8253B846F3D5BC7 /* RootView.swift */; };
 		8391D63208B7845D168EB772 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BBC8FAB58169CEFF5B26DD7 /* Assets.xcassets */; };
 		26D0F2C9FD13DC47F260E108 /* DailyRankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F958101A86AE5C9949F8E /* DailyRankingView.swift */; };
+		C0461A935A2A4709D8E807C6 /* ParticipantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */; };
+		B3D60A53103947F80F0948F0 /* GroupSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */; };
+		798EE2F74F6DE701BF9495CB /* DashboardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */; };
 		DDF210D72642D31B76AE6D93 /* WeeklyRankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */; };
 		F5C25E13CA22DE3F3E675A05 /* MonthlyRankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +42,9 @@
 		9BBC8FAB58169CEFF5B26DD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C867668D432FF9C63A83FB34 /* HabitTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C18F958101A86AE5C9949F8E /* DailyRankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRankingView.swift; sourceTree = "<group>"; };
+		AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantDetailView.swift; sourceTree = "<group>"; };
+		F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryView.swift; sourceTree = "<group>"; };
+		7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStyle.swift; sourceTree = "<group>"; };
 		7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRankingView.swift; sourceTree = "<group>"; };
 		36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyRankingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +116,9 @@
 			isa = PBXGroup;
 			children = (
 				C18F958101A86AE5C9949F8E /* DailyRankingView.swift */,
+				AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */,
+				F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */,
+				7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */,
 				7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */,
 				36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */,
 			);
@@ -197,6 +206,9 @@
 				4B35C5163A64316AD977AE55 /* SettingsView.swift in Sources */,
 				C27722F271C3B74192A9A4BD /* RootView.swift in Sources */,
 				26D0F2C9FD13DC47F260E108 /* DailyRankingView.swift in Sources */,
+				C0461A935A2A4709D8E807C6 /* ParticipantDetailView.swift in Sources */,
+				B3D60A53103947F80F0948F0 /* GroupSummaryView.swift in Sources */,
+				798EE2F74F6DE701BF9495CB /* DashboardStyle.swift in Sources */,
 				DDF210D72642D31B76AE6D93 /* WeeklyRankingView.swift in Sources */,
 				F5C25E13CA22DE3F3E675A05 /* MonthlyRankingView.swift in Sources */,
 			);

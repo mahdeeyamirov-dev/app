@@ -30,16 +30,55 @@ function requireApiToken(req, res, next) {
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
+// Dashboard queries take ?group=90-93&from=YYYY-MM-DD&to=YYYY-MM-DD.
+// The window defaults to today; an unknown group is a 400.
+function dashboardQuery(req, res) {
+  const group = db.getGroup(req.query.group);
+  if (!group) {
+    res.status(400).json({ error: 'unknown group' });
+    return null;
+  }
+  const today = db.formatDate(new Date());
+  const from = db.isValidDate(req.query.from) ? req.query.from : today;
+  const to = db.isValidDate(req.query.to) ? req.query.to : from;
+  if (from > to) {
+    res.status(400).json({ error: 'from is after to' });
+    return null;
+  }
+  return { group, from, to };
+}
+
+app.get('/api/groups', requireApiToken, (req, res) => {
+  res.json({
+    groups: db.GROUPS.map((g) => ({
+      key: g.key,
+      name: g.name,
+      metrics: g.metrics.map((m) => ({ key: m.key, name: m.name, minValue: m.min })),
+    })),
+  });
+});
+
 app.get('/api/dashboard/base', requireApiToken, (req, res) => {
-  res.json({ participants: db.dashboardSnapshot() });
+  const q = dashboardQuery(req, res);
+  if (!q) return;
+  res.json({ from: q.from, to: q.to, participants: db.dashboardSnapshot(q.group.key, q.from, q.to) });
+});
+
+app.get('/api/dashboard/base/participants/:id', requireApiToken, (req, res) => {
+  const q = dashboardQuery(req, res);
+  if (!q) return;
+  const detail = db.participantDetail(parseInt(req.params.id, 10), q.from, q.to);
+  if (!detail) return res.status(404).json({ error: 'not found' });
+  res.json(detail);
 });
 
 app.get('/api/dashboard/base/history', requireApiToken, (req, res) => {
-  const weeks = Math.min(Math.max(parseInt(req.query.weeks, 10) || 6, 2), 26);
-  res.json({ weeks, participants: db.dashboardHistory(weeks) });
+  const q = dashboardQuery(req, res);
+  if (!q) return;
+  res.json({ from: q.from, to: q.to, ...db.dashboardHistory(q.group.key, q.from, q.to) });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`API server listening on port ${PORT}`);
 });
 
@@ -47,5 +86,11 @@ const bot = createBot(BOT_TOKEN);
 bot.launch();
 console.log('Telegram bot started (long polling)');
 
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+// Stop both the bot and the HTTP server; stopping only the bot leaves the
+// process running and still holding the port.
+function shutdown(signal) {
+  bot.stop(signal);
+  server.close(() => process.exit(0));
+}
+process.once('SIGINT', () => shutdown('SIGINT'));
+process.once('SIGTERM', () => shutdown('SIGTERM'));
