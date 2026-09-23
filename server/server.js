@@ -6,8 +6,10 @@ const config = require('./config');
 const { createBot, startScheduler } = require('./bot');
 
 const PORT = process.env.PORT || 3000;
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const API_TOKEN = process.env.API_TOKEN;
+// Trimmed: values pasted into a hosting dashboard often pick up a stray
+// space or newline, which would make every request fail as unauthorized.
+const BOT_TOKEN = (process.env.BOT_TOKEN || '').trim();
+const API_TOKEN = (process.env.API_TOKEN || '').trim();
 
 if (!BOT_TOKEN) {
   console.error('BOT_TOKEN is not set. Get one from @BotFather and put it in .env');
@@ -23,7 +25,7 @@ app.use(cors());
 app.use(express.json({ limit: '200kb' }));
 
 function requireApiToken(req, res, next) {
-  const provided = req.get('x-api-token') || req.query.token;
+  const provided = (req.get('x-api-token') || req.query.token || '').trim();
   if (provided !== API_TOKEN) {
     return res.status(401).json({ error: 'unauthorized' });
   }
