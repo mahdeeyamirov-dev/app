@@ -12,8 +12,9 @@ RUN npm install --omit=dev
 
 COPY . .
 
+# Mount persistent storage at /app/data (on Railway: Attach Volume; the
+# Dockerfile VOLUME instruction is rejected there).
 ENV DATA_DIR=/app/data
-VOLUME ["/app/data"]
 
 EXPOSE 3000
 CMD ["node", "server.js"]
