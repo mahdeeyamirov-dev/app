@@ -79,6 +79,28 @@ final class DashboardService: ObservableObject {
         ]
     }
 
+    static func fetchConfig(serverURL: String, apiToken: String) async throws -> TrackerConfig {
+        try await fetchJSON(path: "api/config", serverURL: serverURL, apiToken: apiToken)
+    }
+
+    /// Saves the whole config and returns it as the server stored it, with
+    /// keys assigned to new groups and metrics.
+    static func saveConfig(_ config: TrackerConfig, serverURL: String, apiToken: String) async throws -> TrackerConfig {
+        try await fetchJSON(
+            path: "api/config",
+            method: "PUT",
+            body: try JSONEncoder().encode(config),
+            serverURL: serverURL,
+            apiToken: apiToken
+        )
+    }
+
+    /// Forgets the loaded groups so the next refresh reloads them, e.g. after
+    /// they were edited.
+    func resetGroups() {
+        groups = []
+    }
+
     static func message(for error: Error) -> String {
         (error as? DashboardError)?.message ?? error.localizedDescription
     }
@@ -105,6 +127,8 @@ final class DashboardService: ObservableObject {
     private static func fetchJSON<T: Decodable>(
         path: String,
         queryItems: [URLQueryItem] = [],
+        method: String = "GET",
+        body: Data? = nil,
         serverURL: String,
         apiToken: String
     ) async throws -> T {
@@ -130,12 +154,23 @@ final class DashboardService: ObservableObject {
 
         var request = URLRequest(url: url)
         request.setValue(trimmedToken, forHTTPHeaderField: "x-api-token")
+        request.httpMethod = method
+        if let body {
+            request.httpBody = body
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw DashboardError(message: "Нет ответа от сервера")
         }
         guard httpResponse.statusCode == 200 else {
+            // Validation errors come back as {"error": "..."} in Russian.
+            if httpResponse.statusCode == 400,
+               let body = try? JSONDecoder().decode([String: String].self, from: data),
+               let message = body["error"] {
+                throw DashboardError(message: message)
+            }
             let message = httpResponse.statusCode == 401
                 ? "Неверный API-токен"
                 : "Сервер вернул ошибку (\(httpResponse.statusCode))"

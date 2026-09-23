@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Detailed card per participant showing every base metric's value against its minimum.
+/// Detailed card per participant showing every base metric's weekly total against its target.
 struct WeeklyRankingView: View {
     let participants: [ParticipantSnapshot]
     let onSelect: (ParticipantSnapshot) -> Void
@@ -59,16 +59,9 @@ struct WeeklyRankingView: View {
                             .font(.caption)
                             .lineLimit(1)
                         Spacer(minLength: 0)
-                        Text(DashboardStyle.valueText(metric.value, hasValue: metric.hasValue))
+                        Text(DashboardStyle.progressText(metric))
                             .font(.caption.monospacedDigit())
-                        if let period = DashboardStyle.periodText(start: metric.periodStart, end: metric.periodEnd) {
-                            Text("· \(period)")
-                                .font(.caption2.monospacedDigit())
-                                .foregroundStyle(.secondary)
-                                .frame(width: 80, alignment: .leading)
-                        } else {
-                            Spacer().frame(width: 80)
-                        }
+                            .foregroundStyle(metric.hasValue ? .primary : .secondary)
                     }
                 }
             }

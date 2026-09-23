@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Header above the rankings: group average and how many participants hit
-/// each base metric's minimum, so the group's weak spot is visible at a glance.
+/// each base metric's target, so the group's weak spot is visible at a glance.
 struct GroupSummaryView: View {
     let participants: [ParticipantSnapshot]
 
@@ -86,6 +86,6 @@ struct GroupSummaryView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        .help("\(share.name): минимум выполняют \(share.greenCount) из \(participants.count)")
+        .help("\(share.name): цель выполняют \(share.greenCount) из \(participants.count)")
     }
 }

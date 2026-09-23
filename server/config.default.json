@@ -1,0 +1,32 @@
+{
+  "reminderTime": "21:00",
+  "summaryTime": "21:30",
+  "groups": [
+    {
+      "key": "90-93",
+      "name": "90-93",
+      "metrics": [
+        { "key": "BOOK_PRO", "name": "BOOK PRO", "type": "count", "aggregate": "sum", "target": 7, "unit": "" },
+        { "key": "SLEEP", "name": "SLEEP", "type": "count", "aggregate": "sum", "target": 2, "unit": "" },
+        { "key": "RNK", "name": "RNK", "type": "count", "aggregate": "sum", "target": 14, "unit": "" },
+        { "key": "SAT", "name": "SAT", "type": "count", "aggregate": "max", "target": 2100, "unit": "" },
+        { "key": "SHIELD", "name": "Shield", "type": "count", "aggregate": "sum", "target": 100, "unit": "" },
+        { "key": "BOOK", "name": "BOOK", "type": "count", "aggregate": "sum", "target": 20, "unit": "" },
+        { "key": "DIET", "name": "DIET", "type": "check", "aggregate": "sum", "target": 1, "unit": "" }
+      ]
+    },
+    {
+      "key": "81-94",
+      "name": "81-94",
+      "metrics": [
+        { "key": "BOOK_PRO", "name": "BOOK PRO", "type": "count", "aggregate": "sum", "target": 7, "unit": "" },
+        { "key": "SLEEP", "name": "SLEEP", "type": "count", "aggregate": "sum", "target": 1, "unit": "" },
+        { "key": "BOOK", "name": "BOOK", "type": "count", "aggregate": "sum", "target": 21, "unit": "" },
+        { "key": "SHIELD", "name": "Shield", "type": "count", "aggregate": "sum", "target": 50, "unit": "" },
+        { "key": "SAT", "name": "SAT", "type": "count", "aggregate": "max", "target": 2100, "unit": "" },
+        { "key": "MP3", "name": "MP3", "type": "count", "aggregate": "sum", "target": 30, "unit": "" },
+        { "key": "RNK", "name": "RNK", "type": "count", "aggregate": "sum", "target": 10, "unit": "" }
+      ]
+    }
+  ]
+}

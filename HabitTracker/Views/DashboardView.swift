@@ -84,6 +84,7 @@ struct DashboardView: View {
     @AppStorage("apiToken") private var apiToken = ""
     @AppStorage("dashboardGroup") private var group = ""
     @State private var isShowingSettings = false
+    @State private var isShowingGroupsEditor = false
     @State private var period: DashboardPeriod = .daily
     @State private var anchor = Date.now
     @State private var selected: SelectedParticipant?
@@ -103,6 +104,14 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
+                        isShowingGroupsEditor = true
+                    } label: {
+                        Label("Группы и пункты", systemImage: "slider.horizontal.3")
+                    }
+                    .help("Группы, пункты и недельные цели")
+                }
+                ToolbarItem {
+                    Button {
                         isShowingSettings = true
                     } label: {
                         Label("Настройки", systemImage: "gearshape")
@@ -118,6 +127,12 @@ struct DashboardView: View {
             }
             .sheet(isPresented: $isShowingSettings, onDismiss: { Task { await refresh() } }) {
                 SettingsView()
+            }
+            .sheet(isPresented: $isShowingGroupsEditor) {
+                GroupsEditorView {
+                    service.resetGroups()
+                    Task { await refresh() }
+                }
             }
             .sheet(item: $selected) { participant in
                 ParticipantDetailView(

@@ -23,6 +23,7 @@
 		C0461A935A2A4709D8E807C6 /* ParticipantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */; };
 		B3D60A53103947F80F0948F0 /* GroupSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */; };
 		798EE2F74F6DE701BF9495CB /* DashboardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */; };
+		34B4E173462CB2A8921159B7 /* GroupsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3853047003BD6F136EAE82B /* GroupsEditorView.swift */; };
 		DDF210D72642D31B76AE6D93 /* WeeklyRankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */; };
 		F5C25E13CA22DE3F3E675A05 /* MonthlyRankingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantDetailView.swift; sourceTree = "<group>"; };
 		F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSummaryView.swift; sourceTree = "<group>"; };
 		7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStyle.swift; sourceTree = "<group>"; };
+		E3853047003BD6F136EAE82B /* GroupsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsEditorView.swift; sourceTree = "<group>"; };
 		7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRankingView.swift; sourceTree = "<group>"; };
 		36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyRankingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 				AC72A14691C2D678E7451749 /* ParticipantDetailView.swift */,
 				F4FB132D2218E0DED32E39F2 /* GroupSummaryView.swift */,
 				7A151DCA8DBEF6346CE949D6 /* DashboardStyle.swift */,
+				E3853047003BD6F136EAE82B /* GroupsEditorView.swift */,
 				7C1250A6531C70BF32F3BE99 /* WeeklyRankingView.swift */,
 				36FA93D8F922DCC7AF0971F1 /* MonthlyRankingView.swift */,
 			);
@@ -209,6 +212,7 @@
 				C0461A935A2A4709D8E807C6 /* ParticipantDetailView.swift in Sources */,
 				B3D60A53103947F80F0948F0 /* GroupSummaryView.swift in Sources */,
 				798EE2F74F6DE701BF9495CB /* DashboardStyle.swift in Sources */,
+				34B4E173462CB2A8921159B7 /* GroupsEditorView.swift in Sources */,
 				DDF210D72642D31B76AE6D93 /* WeeklyRankingView.swift in Sources */,
 				F5C25E13CA22DE3F3E675A05 /* MonthlyRankingView.swift in Sources */,
 			);

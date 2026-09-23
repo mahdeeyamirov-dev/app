@@ -25,6 +25,18 @@ enum DashboardStyle {
         hasValue ? formatValue(value) : "—"
     }
 
+    /// " стр." for a metric with a unit, " дн." for a yes/no metric.
+    static func unitSuffix(type: MetricType, unit: String) -> String {
+        if type == .check { return " дн." }
+        return unit.isEmpty ? "" : " " + unit
+    }
+
+    /// "84 / 150 стр." — the total against the target for the window.
+    static func progressText(_ metric: BaseMetricStatus) -> String {
+        "\(valueText(metric.value, hasValue: metric.hasValue)) / \(formatValue(metric.minValue))"
+            + unitSuffix(type: metric.type, unit: metric.unit)
+    }
+
     /// "09.09–16.09", or "22.09" for a single day; nil when there is no period.
     static func periodText(start: String?, end: String?) -> String? {
         guard let start, let end else { return nil }

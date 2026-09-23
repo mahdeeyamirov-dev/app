@@ -1,8 +1,8 @@
 import Charts
 import SwiftUI
 
-/// Sheet opened by clicking a participant: every base metric's current value
-/// against its minimum, plus a chart of how the value changed over time.
+/// Sheet opened by clicking a participant: every base metric's total for the
+/// window against its target, the entries behind it, and weekly totals over time.
 struct ParticipantDetailView: View {
     let participantID: Int
     let displayName: String
@@ -104,6 +104,8 @@ private struct MetricDetailCard: View {
         return min(metric.value / metric.minValue, 1)
     }
 
+    private var unit: String { DashboardStyle.unitSuffix(type: metric.type, unit: metric.unit) }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
@@ -112,8 +114,8 @@ private struct MetricDetailCard: View {
                     .frame(width: 8, height: 8)
                 Text(metric.name)
                     .font(.headline)
-                if let period = DashboardStyle.periodText(start: metric.periodStart, end: metric.periodEnd) {
-                    Text("за \(period)")
+                if metric.aggregate == .max {
+                    Text("лучший результат")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -121,7 +123,7 @@ private struct MetricDetailCard: View {
                 Text(DashboardStyle.valueText(metric.value, hasValue: metric.hasValue))
                     .font(.title3.bold().monospacedDigit())
                     .foregroundStyle(statusColor)
-                Text("/ \(DashboardStyle.formatValue(metric.minValue))")
+                Text("/ \(DashboardStyle.formatValue(metric.minValue))\(unit)")
                     .font(.subheadline.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
@@ -129,14 +131,14 @@ private struct MetricDetailCard: View {
             ProgressView(value: progress)
                 .tint(statusColor)
 
-            if metric.entries.count >= 2 {
-                historyChart
-            } else if metric.entries.isEmpty {
-                Text("Значение ещё не вносилось")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            if !metric.entries.isEmpty {
+                entriesList
+            }
+
+            if metric.weeks.contains(where: \.hasValue) {
+                weeksChart
             } else {
-                Text("Пока одно значение — график появится после следующего обновления")
+                Text("Отметок пока нет")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -145,34 +147,43 @@ private struct MetricDetailCard: View {
         .background(.quaternary.opacity(0.3), in: RoundedRectangle(cornerRadius: 10))
     }
 
-    private var historyChart: some View {
-        Chart {
-            ForEach(metric.entries, id: \.self) { entry in
-                LineMark(
-                    x: .value("Конец периода", entry.periodEndDate),
-                    y: .value(metric.name, entry.value)
-                )
-                .interpolationMethod(.stepEnd)
-                .foregroundStyle(.secondary)
+    /// The entries in the window, e.g. "22.09: 21 · 23.09: 63".
+    private var entriesList: some View {
+        let text = metric.entries.map { entry in
+            let period = DashboardStyle.periodText(start: entry.periodStart, end: entry.periodEnd) ?? ""
+            let value = metric.type == .check && entry.periodStart == entry.periodEnd
+                ? "✓"
+                : DashboardStyle.formatValue(entry.value)
+            return "\(period): \(value)"
+        }.joined(separator: " · ")
+        return Text("Отметки: " + text)
+            .font(.caption.monospacedDigit())
+            .foregroundStyle(.secondary)
+            .lineLimit(3)
+            .help(text)
+    }
 
-                PointMark(
-                    x: .value("Конец периода", entry.periodEndDate),
-                    y: .value(metric.name, entry.value)
+    private var weeksChart: some View {
+        Chart {
+            ForEach(metric.weeks, id: \.self) { week in
+                BarMark(
+                    x: .value("Неделя", week.weekStartDate, unit: .weekOfYear),
+                    y: .value(metric.name, week.value)
                 )
-                .foregroundStyle(entry.value >= metric.minValue ? Color.green : Color.red)
+                .foregroundStyle(week.value >= metric.weeklyTarget ? Color.green : Color.red.opacity(0.7))
             }
 
-            RuleMark(y: .value("Минимум", metric.minValue))
+            RuleMark(y: .value("Цель", metric.weeklyTarget))
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
                 .foregroundStyle(.secondary)
                 .annotation(position: .top, alignment: .leading) {
-                    Text("минимум")
+                    Text("цель на неделю")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
         }
         .chartXAxis {
-            AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+            AxisMarks(values: .stride(by: .weekOfYear, count: 2)) { _ in
                 AxisGridLine()
                 AxisValueLabel(format: .dateTime.day().month(.abbreviated).locale(Locale(identifier: "ru_RU")))
             }

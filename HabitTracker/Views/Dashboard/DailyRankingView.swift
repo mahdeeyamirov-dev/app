@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Compact leaderboard: one row per participant, sorted by today's % of green base metrics.
+/// Compact leaderboard: one row per participant, sorted by the day's % of base metrics on track (weekly targets scaled to one day).
 struct DailyRankingView: View {
     let participants: [ParticipantSnapshot]
     let onSelect: (ParticipantSnapshot) -> Void
@@ -35,9 +35,7 @@ struct DailyRankingView: View {
     }
 
     private func tooltip(_ metric: BaseMetricStatus) -> String {
-        let value = "\(metric.name): \(DashboardStyle.valueText(metric.value, hasValue: metric.hasValue)) / \(DashboardStyle.formatValue(metric.minValue))"
-        guard let period = DashboardStyle.periodText(start: metric.periodStart, end: metric.periodEnd) else { return value }
-        return value + " · за \(period)"
+        "\(metric.name): \(DashboardStyle.progressText(metric))"
     }
 
     private func row(_ participant: ParticipantSnapshot, rank: Int) -> some View {
